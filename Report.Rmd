@@ -1,0 +1,333 @@
+---
+title: "Transportation Efficiency of Haryana Roadways"
+author: "Samarjeet Singh [UIET KUK]"
+date: "2023-11-04"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+### <br><br>What is the Purpose of the Report ?
+
+
+##### Report will help us to answer Following Questions :-
+
+
+* What is average total time taken to complete one journey ?
+* What is the average travel time between Different Stop ?
+* What is the average Waiting Time at each stop ?
+* What is the Total Waiting Time and Contribution of Each Stop in total Waiting Time ?
+* What is the efficiency between Different Stops ?
+* What is the Average Speed of the Total Journey ?
+* What is the Average Speed between Different Stops ?
+* What is the Total Time wasted in Travelling ?
+
+### <br><br>Route of Observance
+
+
+##### Route has following Stops :-
+
+* 3rd Gate Kurukshetra University
+* New Bus Stand Kurukshetra
+* Pipli
+* New Bus Stand Karnal
+* Nirmal Kutia Karnal
+* Home 
+
+ 
+
+```{r, out.width = "350px", fig.align='center', echo=FALSE}
+knitr::include_graphics("/cloud/project/TEST.png")
+```
+
+```{r, echo=FALSE, message=FALSE}
+install.packages('ggplot2')
+library(ggplot2)
+journey <- read.csv("/cloud/project/data.csv", header = TRUE)
+```
+```{r include=FALSE}
+knitr::opts_chunk$set(comment = NA)
+```
+
+### <br><br> What is average total time taken to complete one journey ?
+
+
+##### <br> Average Total Time Taken to Complete One Journey is
+
+```{r, echo=FALSE, message=FALSE}
+means <- mean(journey$Total_Time_Taken)
+```
+
+```{r,echo=FALSE}
+cat(means," Minutes")
+```
+
+##### Maximum Total Time Taken to Complete One Journey is
+
+```{r, echo=FALSE, message=FALSE}
+maxm <- max(journey$Total_Time_Taken)
+```
+
+```{r,echo=FALSE}
+cat(maxm," Minutes")
+```
+
+##### Minimum Total Time Taken to Complete One Journey is 
+
+```{r, echo=FALSE, message=FALSE}
+mins <- min(journey$Total_Time_Taken)
+```
+
+```{r,echo=FALSE}
+cat(mins," Minutes")
+```
+
+### <br><br> What is the average travel time between Different Stop ?
+
+
+##### <br> Average Travel Time from 3rd Gate to New Bus Stand Kurukshetra :- 
+```{r, echo=FALSE, message=FALSE}
+avg7 <- mean(journey$IIIrd_Gate_TO_New_Bus_Stand_Kurukshetra)
+```
+
+```{r,echo=FALSE}
+cat(avg7," Minutes")
+```
+
+##### <br> Average Travel Time from New Bus Stand Kurukshetra to Pipli :- 
+```{r, echo=FALSE, message=FALSE}
+avg8 <- mean(journey$New_Bus_Stand_Kurukshetra_TO_Pipli)
+```
+
+```{r,echo=FALSE}
+cat(avg8," Minutes")
+```
+
+##### <br> Average Travel Time from Pipli to New Bus Stand Karnal :- 
+```{r, echo=FALSE, message=FALSE}
+avg9 <- mean(journey$Pipli_TO_New_Bus_Stand_Karnal)
+```
+
+```{r,echo=FALSE}
+cat(avg9," Minutes")
+```
+
+##### <br> Average Travel Time from New Bus Stand Karnal to Nirmal Kutia :- 
+```{r, echo=FALSE, message=FALSE}
+avg10 <- mean(journey$New_Bus_Stand_Karnal_TO_Nirmal_Kutia)
+```
+
+```{r,echo=FALSE}
+cat(avg10," Minutes")
+```
+
+### <br><br> What is the average Waiting Time at each stop ?
+
+
+##### <br> Average Waiting Time at 3rd Gate :- 
+```{r, echo=FALSE, message=FALSE}
+avg1 <- mean(journey$Wait_at_Third_Gate)
+```
+
+```{r,echo=FALSE}
+cat(avg1," Minutes")
+```
+##### <br> Average Waiting Time at New Bus Stand Kurukshetra :- 
+```{r, echo=FALSE, message=FALSE}
+avg2 <- mean(journey$Wait_at_New_Bus_Stand_Kurukshetra)
+```
+
+```{r,echo=FALSE}
+cat(avg2," Minutes")
+```
+##### <br> Average Waiting Time at Pipli :- 
+```{r, echo=FALSE, message=FALSE}
+avg3 <- mean(journey$Wait_at_Pipli)
+```
+
+```{r,echo=FALSE}
+cat(avg3," Minutes")
+```
+
+##### <br> Average Waiting Time at New Bus Stand Karnal :- 
+```{r, echo=FALSE, message=FALSE}
+avg4 <- mean(journey$Wait_at_Karnal_New_Bus_Stand_Karnal)
+```
+
+```{r,echo=FALSE}
+cat(avg4," Minutes")
+```
+
+### <br><br> What is the Total Waiting Time and Contribution of Each Stop in total Waiting Time ?
+
+
+##### <br> Total Average Waiting Time :-
+
+```{r,echo=FALSE}
+avgt = avg1+avg2+avg3+avg4
+cat(avgt," Minutes")
+```
+
+##### <br> Contribution of Each Stop in Total Average Waiting Time :-
+
+```{r,echo=FALSE}
+dataP <- data.frame(Stops=c("3rd Gate","New Bus Stand Kurukshetra","Pipli","New Bus Stand Karnal"),value = c(avg1,avg2,avg3,avg4)) 
+
+print('Pie Chart Here')
+
+ggplot(dataP, aes(x="",y=value,fill=Stops)) + geom_bar(stat="identity",width=1)+ coord_polar("y",start=0) + theme_void()
+```
+
+### <br><br> What is the efficiency of the Total Journey ?
+
+In Order To Calculate Efficiency of Total Jounrey, we need to calculate time taken to travel directly in Car between these Stops, So we have observe the Following Minimum Time in Car which is 46 Minute for whole journey.
+
+##### <br> Efficiency of Whole Journey Without Waiting Time :-
+
+```{r, echo=FALSE, message=FALSE}
+effwwt <- (46/((mean(journey$IIIrd_Gate_TO_New_Bus_Stand_Kurukshetra)+(mean(journey$New_Bus_Stand_Kurukshetra_TO_Pipli)+(mean(journey$Pipli_TO_New_Bus_Stand_Karnal))+(mean(journey$New_Bus_Stand_Karnal_TO_Nirmal_Kutia))+11))))*100
+```
+
+```{r,echo=FALSE}
+cat(effwwt," %")
+```
+##### <br> Efficiency of Whole Journey With Waiting Time :-
+
+```{r, echo=FALSE, message=FALSE}
+effwt <- (46/(mean(journey$Total_Time_Taken)))*100
+```
+
+```{r,echo=FALSE}
+cat(effwt," %")
+```
+[Note :- In the duration of 46 minutes, Time taken in between stop is not taken into consideration, time taken to complete journey from 3rd Gate to Home directly is considered.]
+
+### <br><br> What is the efficiency between Different Stops ?
+
+In Order To Calculate Efficiency between Each Stop, we need to calculate time taken to travel directly in Car between these Stops, So we have observed the Following Minimum Time in Car :-
+
+* 3rd Gate Kurukshetra University - New Bus Stand Kurukshetra (12 Minutes)
+* New Bus Stand Kurukshetra - Pipli (5 Minutes)
+* Pipli - New Bus Stand Karnal (27 Minutes)
+* New Bus Stand Karnal - Nirmal Kutia Karnal (7 Minutes)
+
+
+
+##### <br> Efficiency between 3rd Gate Kurukshetra University to New Bus Stand Kurukshetra with 12 Minutes Travel Time :-
+```{r, echo=FALSE, message=FALSE}
+eff1 <- (12/(mean(journey$IIIrd_Gate_TO_New_Bus_Stand_Kurukshetra)))*100
+```
+
+```{r,echo=FALSE}
+cat(eff1," %")
+```
+
+##### <br> Efficiency between New Bus Stand Kurukshetra to Pipli with 5 Minutes Travel Time :-
+```{r, echo=FALSE, message=FALSE}
+eff2 <- (5/(mean(journey$New_Bus_Stand_Kurukshetra_TO_Pipli)))*100
+```
+
+```{r,echo=FALSE}
+cat(eff2," %")
+```
+
+##### <br> Efficiency between Pipli to New Bus Stand Karnal with 27 Minutes Travel Time :-
+```{r, echo=FALSE, message=FALSE}
+eff3 <- (27/(mean(journey$Pipli_TO_New_Bus_Stand_Karnal)))*100
+```
+
+```{r,echo=FALSE}
+cat(eff3," %")
+```
+
+
+##### <br> Efficiency between New Bus Stand Karnal to Nirmal Kutia with 7 Minutes Travel Time :-
+```{r, echo=FALSE, message=FALSE}
+eff4 <- (7/(mean(journey$New_Bus_Stand_Karnal_TO_Nirmal_Kutia)))*100
+```
+
+```{r,echo=FALSE}
+cat(eff4," %")
+```
+[Note :- Waiting Time is not Taken in Consideration]
+
+### <br><br> What is the Average Speed of the Total Journey ?
+
+In Order To Calculate Efficiency of Total Jounrey, we need to calculate time taken to travel directly in Car between these Stops, So we have observe the Following Minimum Time in Car which is 46 Minute for whole journey.
+
+##### <br> Average Speed of Whole Journey Without Waiting Time :-
+
+```{r, echo=FALSE, message=FALSE}
+speeda <- (46/((mean(journey$IIIrd_Gate_TO_New_Bus_Stand_Kurukshetra)+(mean(journey$New_Bus_Stand_Kurukshetra_TO_Pipli)+(mean(journey$Pipli_TO_New_Bus_Stand_Karnal))+(mean(journey$New_Bus_Stand_Karnal_TO_Nirmal_Kutia))+11))/60))
+```
+
+```{r,echo=FALSE}
+cat(speeda," KM/HR")
+```
+##### <br> Average Speed of Whole Journey With Waiting Time :-
+
+```{r, echo=FALSE, message=FALSE}
+speedb <- (45/(mean(journey$Total_Time_Taken)/60))
+```
+
+```{r,echo=FALSE}
+cat(speedb," KM/HR")
+```
+[Note :- In the duration of 45 Kilometers,Extra Distance in between stop is not taken into consideration, Distance to complete journey from 3rd Gate to Home directly is considered.]
+
+### <br><br> What is the Average Speed between Different Stops ?
+
+In Order To Calculate Speed between Each Stop, we need to calculate Distance in Kilometers to travel between these Stops, So we have observed the Following Distance in Car :- 
+
+* 3rd Gate Kurukshetra University - New Bus Stand Kurukshetra (6 KM)
+* New Bus Stand Kurukshetra - Pipli (3.1 KM)
+* Pipli - New Bus Stand Karnal (30 KM)
+* New Bus Stand Karnal - Nirmal Kutia Karnal (5.7 KM)
+
+##### <br> Average Speed between 3rd Gate Kurukshetra University to New Bus Stand Kurukshetra with 6 Kilometer Distance :-
+```{r, echo=FALSE, message=FALSE}
+speed1 <- (6/((mean(journey$IIIrd_Gate_TO_New_Bus_Stand_Kurukshetra))/60))
+```
+
+```{r,echo=FALSE}
+cat(speed1," KM/HR")
+```
+
+##### <br> Average Speed between New Bus Stand Kurukshetra to Pipli with 3.1 Kilometer Distance :-
+```{r, echo=FALSE, message=FALSE}
+speed2 <- (3.1/((mean(journey$New_Bus_Stand_Kurukshetra_TO_Pipli))/60))
+```
+
+```{r,echo=FALSE}
+cat(speed2," KM/HR")
+```
+
+##### <br> Average Speed between Pipli to New Bus Stand Karnal with 30 Kilometer Distance :-
+```{r, echo=FALSE, message=FALSE}
+speed3 <- (30/((mean(journey$Pipli_TO_New_Bus_Stand_Karnal))/60))
+```
+
+```{r,echo=FALSE}
+cat(speed3," KM/HR")
+```
+
+##### <br> Average Speed between New Bus Stand Karnal to Nirmal Kutia with 5.7 Kilometer Distance :-
+```{r, echo=FALSE, message=FALSE}
+speed4 <- (5.7/((mean(journey$New_Bus_Stand_Karnal_TO_Nirmal_Kutia))/60))
+```
+
+```{r,echo=FALSE}
+cat(speed4," KM/HR")
+```
+[Note :- Waiting Time is not Taken in Consideration]
+
+### <br><br> What is the Total Time wasted in Travelling from 20/10/2023 till 3/11/2023 :-
+Total Time Wasted in Travelling :-
+
+```{r, echo=FALSE, message=FALSE}
+sums <- ((sum(journey$Total_Time_Taken)))
+```
+
+```{r,echo=FALSE}
+cat(sums%/%60," Hours","  ",sums%%60," Minutes")
+```
